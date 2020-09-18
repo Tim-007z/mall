@@ -26,7 +26,8 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -97,5 +98,18 @@ public class SysLogAspect {
 		sysLog.setCreateDate(new Date());
 		//保存系统日志
 		sysLogService.save(sysLog);
+	}
+
+	public static void main(String[] args) {
+		ArrayList<HashMap<String, Integer>> allList = new ArrayList<>();
+		for (int i = 0; i < 3; i++) {
+			HashMap<String, Integer> map = new HashMap<>();
+			map.put("id", i + 1);
+			map.put("status", i + 1);
+			allList.add(map);
+		}
+		System.out.println("allList = " + allList);
+		Map<Integer, HashMap<String, Integer>> catMap = allList.stream().collect(Collectors.toMap(map -> (Integer) map.get("status"), map -> map));
+		System.out.println("catMap = " + catMap);
 	}
 }

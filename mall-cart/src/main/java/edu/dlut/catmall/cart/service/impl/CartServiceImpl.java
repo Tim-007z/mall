@@ -149,15 +149,14 @@ public class CartServiceImpl implements CartService {
         if (!ObjectUtils.isEmpty(userInfoTO)) {
             String cartKey = CART_PREFIX + userInfoTO.getUserId();
             List<CartItem> cartItems = getCartItems(cartKey);
-            List<CartItem> collect = cartItems.stream().filter(o -> o.getChecked())
-                    .map(o -> {
+            assert cartItems != null;
+            return cartItems.stream().filter(CartItem::getChecked)
+                    .peek(o -> {
                         R price = productFeign.getPrice(o.getSkuId());
                         // 更新为最新价格
                         String data = (String) price.get("data");
                         o.setPrice(new BigDecimal(data));
-                        return o;
                     }).collect(Collectors.toList());
-            return collect;
         }
         return null;
     }

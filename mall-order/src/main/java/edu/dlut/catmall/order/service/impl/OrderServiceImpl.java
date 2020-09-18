@@ -113,7 +113,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             orderConfirmVO.setItems(currentUserCartItems);
         }, threadPoolExecutor).thenRunAsync(() -> {
             List<OrderItemVO> items = orderConfirmVO.getItems();
-            List<Long> collect = items.stream().map(o -> o.getSkuId()).collect(Collectors.toList());
+            List<Long> collect = items.stream().map(OrderItemVO::getSkuId).collect(Collectors.toList());
             R hasStock = wareFeign.getSkusHasStock(collect);
             List<SkuHasStockVO> data = hasStock.getData(new TypeReference<List<SkuHasStockVO>>() {});
             if (!CollectionUtils.isEmpty(data)) {
@@ -343,12 +343,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     private List<OrderItemEntity> buildOrderItems(String orderSn) {
         List<OrderItemVO> currentUserCartItems = cartFeign.getCurrentUserCartItems();
         if (!CollectionUtils.isEmpty(currentUserCartItems)) {
-            List<OrderItemEntity> itemEntities = currentUserCartItems.stream().map(cartItem -> {
+            return currentUserCartItems.stream().map(cartItem -> {
                 OrderItemEntity orderItemEntity = buildOrderItem(cartItem);
                 orderItemEntity.setOrderSn(orderSn);
                 return orderItemEntity;
             }).collect(Collectors.toList());
-            return itemEntities;
         }
         return null;
     }

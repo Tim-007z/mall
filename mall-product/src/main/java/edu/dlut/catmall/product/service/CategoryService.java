@@ -1,9 +1,9 @@
 package edu.dlut.catmall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import edu.dlut.catmall.product.entity.CategoryEntity;
 import edu.dlut.catmall.product.vo.Catelog2VO;
 import edu.dlut.common.utils.PageUtils;
-import edu.dlut.catmall.product.entity.CategoryEntity;
 
 import java.util.List;
 import java.util.Map;

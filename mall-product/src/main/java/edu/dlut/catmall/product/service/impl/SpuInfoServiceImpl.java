@@ -1,6 +1,10 @@
 package edu.dlut.catmall.product.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import edu.dlut.catmall.product.dao.SpuInfoDao;
 import edu.dlut.catmall.product.entity.*;
 import edu.dlut.catmall.product.feign.CouponFeignService;
 import edu.dlut.catmall.product.feign.SearchFeignService;
@@ -12,25 +16,18 @@ import edu.dlut.common.to.SkuHasStockVO;
 import edu.dlut.common.to.SkuReductionTo;
 import edu.dlut.common.to.SpuBoundTo;
 import edu.dlut.common.to.es.ESSkuModel;
+import edu.dlut.common.utils.PageUtils;
+import edu.dlut.common.utils.Query;
 import edu.dlut.common.utils.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import edu.dlut.common.utils.PageUtils;
-import edu.dlut.common.utils.Query;
-
-import edu.dlut.catmall.product.dao.SpuInfoDao;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service("spuInfoService")
@@ -206,7 +203,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         // TODO 4 查询当前 sku 的所有可以用来被检索的规格属性
         List<ProductAttrValueEntity> baseAttrs = attrValueService.baseAttrlistforspu(spuId);
-        List<Long> attrIds = baseAttrs.stream().map(attr -> attr.getAttrId()).collect(Collectors.toList());
+        List<Long> attrIds = baseAttrs.stream().map(ProductAttrValueEntity::getAttrId).collect(Collectors.toList());
 
         List<Long> searchAttrIds = attrService.selectSearchAttrs(attrIds);
 

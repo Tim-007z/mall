@@ -70,7 +70,8 @@ public class IndexController {
     @PostMapping("/reg")
     public String register(@Valid UserRegisterVO vo, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            Map<String, String> errors = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+            Map<String, String> errors = result.getFieldErrors().stream()
+                    .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             redirectAttributes.addFlashAttribute("errors", errors);
             return "redirect:http://auth.catmall.com/register.html";
         }

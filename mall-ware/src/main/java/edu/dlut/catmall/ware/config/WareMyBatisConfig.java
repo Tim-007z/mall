@@ -18,7 +18,6 @@ public class WareMyBatisConfig {
     //引入分页插件
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-        return paginationInterceptor;
+        return new PaginationInterceptor();
     }
 }

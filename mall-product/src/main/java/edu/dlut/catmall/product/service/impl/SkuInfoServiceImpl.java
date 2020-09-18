@@ -1,7 +1,12 @@
 package edu.dlut.catmall.product.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import edu.dlut.catmall.product.dao.SkuInfoDao;
 import edu.dlut.catmall.product.entity.SkuImagesEntity;
+import edu.dlut.catmall.product.entity.SkuInfoEntity;
 import edu.dlut.catmall.product.entity.SpuInfoDescEntity;
 import edu.dlut.catmall.product.feign.SeckillFeign;
 import edu.dlut.catmall.product.service.*;
@@ -9,27 +14,19 @@ import edu.dlut.catmall.product.vo.SeckillInfoVO;
 import edu.dlut.catmall.product.vo.SkuItemSaleAttrVO;
 import edu.dlut.catmall.product.vo.SkuItemVO;
 import edu.dlut.catmall.product.vo.SpuItemAttrGroupVO;
+import edu.dlut.common.utils.PageUtils;
+import edu.dlut.common.utils.Query;
 import edu.dlut.common.utils.R;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import edu.dlut.common.utils.PageUtils;
-import edu.dlut.common.utils.Query;
-
-import edu.dlut.catmall.product.dao.SkuInfoDao;
-import edu.dlut.catmall.product.entity.SkuInfoEntity;
-import org.springframework.util.StringUtils;
-
-import javax.annotation.Resource;
 
 
 @Service("skuInfoService")
@@ -127,6 +124,10 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         return this.list(new QueryWrapper<SkuInfoEntity>().eq("spu_id", spuId));
     }
 
+    /**
+     * CompletableFuture
+     * 异步编排 商品详情
+     */
     @Override
     public SkuItemVO item(Long skuId) throws ExecutionException, InterruptedException {
         SkuItemVO skuItemVO = new SkuItemVO();

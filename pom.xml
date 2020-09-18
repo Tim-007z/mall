@@ -28,6 +28,8 @@
         <module>mall-third-party</module>
         <module>mall-ware</module>
         <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>mall-commons</module>
     </modules>
 
 </project>
